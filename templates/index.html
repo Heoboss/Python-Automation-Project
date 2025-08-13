@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    
+</head>
+<body>
+    <form action="/login" method="get">
+        <!--
+        1. 어디로? : action
+        2. 어떻게? : method
+        3. 언제?   : submit
+        -->
+        ID : <input type="text" name="login_id"> <br/>
+        PW : <input type="password" name="login_pw"> <br/>
+
+        <input type="submit" value="로그인">
+    </form>
+
+    <form action="/secret" method="post">
+        비밀 정보를 입력하세요 : <input type="password" name="hidden"> <br/>
+        <input type="submit" value="몰래">
+    </form>
+
+    <form action="/detect" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="객체 탐지">
+    </form>
+
+    <form action="/compare" method="post" enctype="multipart/form-data">
+        <input type="file" name="file1">
+        <input type="file" name="file2">
+        <input type="submit" value="얼굴 비교">
+    </form>
+</body>
+</html>
