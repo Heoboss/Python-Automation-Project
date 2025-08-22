@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ job.title }} - 채용 정보{% endblock %}
+
+{% block content %}
+<div class="container mx-auto max-w-5xl px-4 py-8">
+    <!-- 뒤로가기 버튼 -->
+    <div class="mb-8">
+        <a href="{{ url_for('scrape', keyword=keyword, count=count) }}" class="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300 inline-flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            목록으로 돌아가기
+        </a>
+    </div>
+
+    <!-- 채용 공고 상세 내용 -->
+    <div class="bg-[var(--bg-card)] p-8 rounded-2xl shadow-lg border border-[var(--border-color)]">
+        <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{{ job.title }}</h1>
+        <p class="text-xl font-medium text-[var(--text-secondary)] mb-6">{{ job.company }}</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-[var(--text-secondary)] mb-6 border-t border-b border-[var(--border-color)] py-6">
+            <p><strong><i class="far fa-calendar-alt text-gray-400 mr-2"></i>마감일:</strong> {{ job.deadline | default('정보 없음', true) }}</p>
+            <p><strong><i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>회사위치:</strong> {{ job.location | default('정보 없음', true) }}</p>
+            <p class="md:col-span-2"><strong><i class="fas fa-cogs text-gray-400 mr-2"></i>스킬:</strong> {{ job.skills | default('정보 없음', true) }}</p>
+            <p class="md:col-span-2"><strong><i class="fas fa-tasks text-gray-400 mr-2"></i>채용절차:</strong> {{ job.hiring_process | default('정보 없음', true) }}</p>
+        </div>
+
+        <div class="space-y-8">
+            <div>
+                <h3 class="text-2xl font-semibold mb-3 text-[var(--text-main)]">주요업무</h3>
+                <div class="text-[var(--text-secondary)] bg-[var(--bg-body)] p-4 rounded-md whitespace-pre-wrap">{{ job.main_tasks | default('정보 없음', true) }}</div>
+            </div>
+            <div>
+                <h3 class="text-2xl font-semibold mb-3 text-[var(--text-main)]">자격요건</h3>
+                <div class="text-[var(--text-secondary)] bg-[var(--bg-body)] p-4 rounded-md whitespace-pre-wrap">{{ job.qualifications | default('정보 없음', true) }}</div>
+            </div>
+            <div>
+                <h3 class="text-2xl font-semibold mb-3 text-[var(--text-main)]">우대사항</h3>
+                <div class="text-[var(--text-secondary)] bg-[var(--bg-body)] p-4 rounded-md whitespace-pre-wrap">{{ job.preferred | default('정보 없음', true) }}</div>
+            </div>
+        </div>
+        <div class="text-right mt-8">
+            <a href="{{ job.link }}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium text-lg">원문 공고 보기 &rarr;</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

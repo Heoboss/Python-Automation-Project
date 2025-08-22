@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}기업 재무정보 조회{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-lg mx-auto bg-[var(--bg-card)] p-8 rounded-xl shadow-lg border border-[var(--border-color)]">
+    <h1 class="text-4xl font-bold text-[var(--text-main)] text-center mb-6">기업 재무정보 조회 📈</h1>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('get_finance_data') }}" method="post" class="space-y-6">
+        <div>
+            <label for="company_name" class="block text-sm font-medium text-[var(--text-secondary)] mb-2">조회할 기업명</label>
+            <input type="text" id="company_name" name="company_name" required placeholder="정확한 기업명을 입력하세요 (예: 삼성전자)"
+                   class="mt-1 block w-full px-4 py-3 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-[var(--text-main)]">
+        </div>
+        <div>
+            <button type="submit"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--bg-body)] focus:ring-indigo-500">
+                조회하기
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

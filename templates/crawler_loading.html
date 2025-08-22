@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block title %}채용 공고 검색 중...{% endblock %}
+
+{% block content %}
+<!-- 화면 중앙에 콘텐츠를 배치하기 위한 flex 컨테이너 -->
+<div class="flex items-center justify-center min-h-[calc(100vh-200px)]">
+    <div class="text-center p-12 space-y-6 bg-[var(--bg-card)] rounded-2xl shadow-lg border border-[var(--border-color)]">
+        <!-- 스피너 애니메이션 -->
+        <div class="w-16 h-16 border-8 border-gray-200 dark:border-gray-600 border-t-purple-500 rounded-full mx-auto animate-spin"></div>
+        <h1 class="text-2xl font-bold text-[var(--text-main)]">데이터를 가져오는 중입니다...</h1>
+        <p class="text-[var(--text-secondary)]">
+            '<span class="font-semibold text-purple-500 dark:text-purple-400">{{ keyword }}</span>'에 대한 {{ count }}개의 채용 공고를 검색하고 있습니다.<br>
+            잠시만 기다려주세요.
+        </p>
+    </div>
+</div>
+
+<script>
+    // 페이지가 로드되면 실제 스크래핑을 수행하는 URL로 자동 이동합니다.
+    window.onload = function() {
+        const keyword = "{{ keyword }}";
+        const count = "{{ count }}";
+        // URL을 만들고, 해당 URL로 페이지를 교체하여 실제 데이터 요청을 시작합니다.
+        window.location.replace(`/scrape?keyword=${encodeURIComponent(keyword)}&count=${count}`);
+    };
+</script>
+{% endblock %}

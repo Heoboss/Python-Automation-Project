@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Welcome{% endblock %} - 취업 All-in-One Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 라이트 모드 기본 색상 */
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-secondary: #4b5563;
+            --border-color: #d1d5db;
+        }
+        html.dark {
+            /* 다크 모드 색상 */
+            --bg-body: #111827;
+            --bg-card: #1f2937;
+            --text-main: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border-color: #374151;
+        }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-[var(--bg-body)] text-[var(--text-main)] min-h-screen pt-20 pb-20">
+
+    <!-- 테마 토글 버튼 (화면 우측 상단 고정) -->
+    <button id="theme-toggle" class="fixed top-4 right-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 rounded-lg z-50">
+        <svg id="sun-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        <svg id="moon-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+    </button>
+
+    <!-- 너비 제한 컨테이너를 제거하고, block content가 직접 body의 자식이 되도록 함 -->
+    {% block content %}{% endblock %}
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const root = document.documentElement;
+
+        const userPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        function setIcon(isDark) {
+            if (isDark) {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+        
+        function loadTheme() {
+            let currentTheme = localStorage.getItem('theme');
+            if (!currentTheme) {
+                currentTheme = userPrefersDark.matches ? 'dark' : 'light';
+            }
+            
+            if (currentTheme === 'dark') {
+                root.classList.add('dark');
+                setIcon(true);
+            } else {
+                root.classList.remove('dark');
+                setIcon(false);
+            }
+        }
+        
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = root.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            setIcon(isDark);
+        });
+        
+        userPrefersDark.addEventListener('change', (e) => {
+            if (localStorage.getItem('theme') === null) {
+                if (e.matches) {
+                    root.classList.add('dark');
+                    setIcon(true);
+                } else {
+                    root.classList.remove('dark');
+                    setIcon(false);
+                }
+            }
+        });
+
+        loadTheme();
+    </script>
+</body>
+</html>

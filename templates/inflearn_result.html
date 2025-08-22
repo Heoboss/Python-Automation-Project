@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block title %}'{{ keyword }}' 강의 검색 결과{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-[var(--text-main)]">
+        <span class="text-indigo-400">'{{ keyword }}'</span>에 대한 강의 검색 결과
+    </h1>
+    <a href="{{ url_for('inflearn_page') }}" class="bg-[var(--bg-nav)] text-[var(--text-main)] font-bold py-2 px-4 rounded-lg hover:bg-[var(--nav-hover-bg)] transition duration-300">
+        새로 검색하기
+    </a>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for course in results %}
+    <a href="{{ course.link }}" target="_blank" rel="noopener noreferrer" class="block transform hover:-translate-y-1 transition-transform duration-300">
+        <div class="bg-[var(--bg-card)] rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-[var(--border-color)]">
+            <div class="p-6 flex-grow">
+                <h3 class="text-lg font-bold text-[var(--text-main)] mb-2 truncate" title="{{ course.title }}">{{ course.title }}</h3>
+                <p class="text-sm text-[var(--text-secondary)] mb-2">강사: {{ course.instructor }}</p>
+                <p class="text-xs text-[var(--text-secondary)] mb-4 truncate" title="{{ course.category }}">{{ course.category }}</p>
+                
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-semibold text-indigo-400">{{ course.price }}</span>
+                    
+                    {% if course.rating != '평점 없음' %}
+                    <span class="flex items-center text-sm font-medium text-yellow-500">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.366 2.445a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.366-2.445a1 1 0 00-1.175 0l-3.366 2.445c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.05 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69L9.049 2.927z"></path></svg>
+                        {{ course.rating }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="p-4 bg-[var(--bg-nav)] text-right">
+                <span class="text-sm font-semibold text-indigo-400 hover:text-indigo-300">
+                    강의 바로가기 →
+                </span>
+            </div>
+        </div>
+    </a>
+    {% else %}
+    <div class="col-span-full text-center py-12">
+        <p class="text-[var(--text-secondary)] text-lg">검색 결과가 없습니다.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

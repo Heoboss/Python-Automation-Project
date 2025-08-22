@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}취업 All-in-One Service{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 라이트 모드 기본 색상 */
+            --bg-body: #f3f4f6;
+            --bg-header: rgba(255, 255, 255, 0.8);
+            --bg-nav: #e5e7eb;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --text-main: #1f2937;
+            --text-secondary: #4b5563;
+            --border-color: #d1d5db;
+            --border-input: #d1d5db;
+            --nav-active-bg: #4f46e5;
+            --nav-active-text: #ffffff;
+            --nav-hover-bg: #d1d5db;
+            --nav-hover-text: #1f2937;
+            --bg-table-header: #f9fafb; /* gray-50 */
+            --bg-table-row-hover: #f3f4f6; /* gray-100 */
+        }
+        .dark {
+            /* 다크 모드 색상 */
+            --bg-body: #111827;
+            --bg-header: rgba(17, 24, 39, 0.8);
+            --bg-nav: #1f2937;
+            --bg-card: #1f2937;
+            --bg-input: #374151;
+            --text-main: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border-color: #374151;
+            --border-input: #4b5563;
+            --nav-active-bg: #4f46e5;
+            --nav-active-text: #ffffff;
+            --nav-hover-bg: #374151;
+            --nav-hover-text: #f3f4f6;
+            --bg-table-header: rgba(55, 65, 81, 0.5); /* gray-700/50 */
+            --bg-table-row-hover: #4b5563; /* gray-600 */
+        }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* 활성화된 네비게이션 링크 스타일 */
+        .nav-link-active {
+            color: var(--nav-active-text);
+            background-color: var(--nav-active-bg);
+        }
+    </style>
+</head>
+<body class="bg-[var(--bg-body)] text-[var(--text-main)]">
+
+    <header class="bg-[var(--bg-header)] backdrop-blur-sm sticky top-0 z-50 border-b border-[var(--border-color)]">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="{{ url_for('main_page') }}" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-500">
+                취업 All-in-One Service
+            </a>
+            <div class="flex items-center space-x-4">
+                <span class="text-[var(--text-secondary)] font-medium hidden sm:block">{{ username or '방문자' }}님 환영합니다.</span>
+                <button id="theme-toggle" class="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 rounded-lg">
+                    <svg id="sun-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <svg id="moon-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                </button>
+                <a href="{{ url_for('logout') }}" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300">
+                    로그아웃
+                </a>
+            </div>
+        </div>
+    </header>
+
+    {% if active_page and active_page != 'main' %}
+    <nav class="bg-[var(--bg-nav)] shadow-md sticky top-[73px] z-40">
+        <div class="container mx-auto px-6 py-2 flex justify-center items-center space-x-2 md:space-x-4 overflow-x-auto">
+            {% set nav_items = {
+                'crawler': ('채용공고 요약', url_for('crawler_page')),
+                'finance': ('기업정보 조회', url_for('finance_page')),
+                'inflearn': ('인프런 강의', url_for('inflearn_page')),
+                'news': ('뉴스 검색', url_for('news_page'))
+            } %}
+            {% for key, value in nav_items.items() %}
+                <a href="{{ value[1] }}" 
+                   class="px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200
+                          {% if active_page == key %} nav-link-active {% else %} text-[var(--text-secondary)] hover:bg-[var(--nav-hover-bg)] hover:text-[var(--nav-hover-text)] {% endif %}">
+                    {{ value[0] }}
+                </a>
+            {% endfor %}
+        </div>
+    </nav>
+    {% endif %}
+
+
+    <main class="w-full max-w-7xl mx-auto p-4 sm:p-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-[var(--bg-header)] border-t border-[var(--border-color)] mt-12">
+        <div class="container mx-auto py-6 px-6 text-center text-[var(--text-secondary)]">
+            <p>&copy; 2025 취뽀. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const userPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // 테마 변경 시 이벤트를 발생시킵니다.
+        const themeChangeEvent = new Event('theme-changed');
+
+        function setIcon(isDark) {
+            if (isDark) {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+        
+        function loadTheme() {
+            let currentTheme = localStorage.getItem('theme');
+            if (!currentTheme) {
+                currentTheme = userPrefersDark.matches ? 'dark' : 'light';
+                localStorage.setItem('theme', currentTheme);
+            }
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark');
+                setIcon(true);
+            } else {
+                document.body.classList.remove('dark');
+                setIcon(false);
+            }
+        }
+        
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            setIcon(isDark);
+            // ★★★ 테마 변경 시 이벤트 발생
+            document.dispatchEvent(themeChangeEvent);
+        });
+        
+        userPrefersDark.addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.body.classList.add('dark');
+                    setIcon(true);
+                } else {
+                    document.body.classList.remove('dark');
+                    setIcon(false);
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', loadTheme);
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+{% extends 'layout.html' %}
+
+{% block title %}채용공고 검색 결과: '{{ keyword }}'{% endblock %}
+
+{% block content %}
+<div class="bg-[var(--bg-card)] p-6 rounded-xl shadow-lg border border-[var(--border-color)]">
+    <h1 class="text-2xl sm:text-3xl font-bold text-[var(--text-main)] mb-2">
+        채용공고 검색 결과: <span class="text-purple-600 dark:text-purple-400">'{{ keyword }}'</span>
+    </h1>
+    <p class="text-[var(--text-secondary)] mb-6">총 {{ results.jobplanet|length + results.jobkorea|length + results.incruit|length }}개의 채용 공고를 가져왔습니다.</p>
+
+    <!-- 버튼 그룹 -->
+    <div class="flex flex-wrap gap-3 mb-8">
+        <a href="{{ url_for('scrape', keyword=keyword, count=count) }}" class="flex-grow sm:flex-grow-0 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M4 4l5 5M20 20l-5-5"></path></svg>
+            새로고침
+        </a>
+        <a href="{{ url_for('clear_cache', keyword=keyword, count=count) }}" class="flex-grow sm:flex-grow-0 bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center justify-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            캐시 삭제
+        </a>
+    </div>
+
+    <div class="space-y-12">
+        <!-- 잡플래닛 결과 섹션 -->
+        <div>
+            <h2 class="text-2xl font-bold text-[var(--text-main)] mb-4 border-b-2 border-[var(--border-color)] pb-2">잡플래닛 검색 결과</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-[var(--bg-table-header)]">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">회사명</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">직무</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">위치</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">주요 스킬</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">상세 보기</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[var(--border-color)]">
+                        {% if results.jobplanet %}
+                            {% for job in results.jobplanet %}
+                            <tr class="hover:bg-[var(--bg-table-row-hover)]">
+                                <td class="py-4 px-4 text-sm font-medium text-[var(--text-main)]">{{ job.company }}</td>
+                                <td class="py-4 px-4 text-sm text-[var(--text-main)]">{{ job.title }}</td>
+                                <td class="py-4 px-4 text-sm text-[var(--text-main)]">{{ job.location }}</td>
+                                <td class="py-4 px-4 text-sm text-[var(--text-main)]">{{ job.skills }}</td>
+                                <td class="py-4 px-4 text-sm">
+                                    <a href="{{ url_for('job_detail', keyword=keyword, count=count, job_index=loop.index0) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline">공고 보기</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="5" class="text-center py-10 text-[var(--text-secondary)]">검색 결과가 없습니다.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 잡코리아 결과 섹션 -->
+        <div>
+            <h2 class="text-2xl font-bold text-[var(--text-main)] mb-4 border-b-2 border-[var(--border-color)] pb-2">잡코리아 검색 결과</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-[var(--bg-table-header)]">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">회사명</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">직무</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">바로가기</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[var(--border-color)]">
+                        {% if results.jobkorea %}
+                            {% for job in results.jobkorea %}
+                            <tr class="hover:bg-[var(--bg-table-row-hover)]">
+                                <td class="py-4 px-4 text-sm font-medium text-[var(--text-main)]">{{ job.company }}</td>
+                                <td class="py-4 px-4 text-sm text-[var(--text-main)]">{{ job.title }}</td>
+                                <td class="py-4 px-4 text-sm">
+                                    <a href="{{ job.link }}" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">원문 보기</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="3" class="text-center py-10 text-[var(--text-secondary)]">검색 결과가 없습니다.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 인크루트 결과 섹션 -->
+        <div>
+            <h2 class="text-2xl font-bold text-[var(--text-main)] mb-4 border-b-2 border-[var(--border-color)] pb-2">인크루트 검색 결과</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-[var(--bg-table-header)]">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">회사명</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">위치</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">직무</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">경력/학력</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-[var(--text-secondary)] uppercase">바로가기</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[var(--border-color)]">
+                        {% if results.incruit %}
+                            {% for job in results.incruit %}
+                            <tr class="hover:bg-[var(--bg-table-row-hover)]">
+                                <td class="py-4 px-4 text-sm font-medium text-[var(--text-main)]">{{ job.company }}</td>
+                                <td class="py-4 px-4 text-sm text-[var(--text-main)]">{{ job.title }}</td>
+                                <td class="py-4 px-4 text-sm text-[var(--text-main)]">{{ job.location }}</td>
+                                <td class="py-4 px-4 text-sm text-[var(--text-main)]">{{ job.experience }} / {{ job.education }}</td>
+                                <td class="py-4 px-4 text-sm">
+                                    <a href="{{ job.link }}" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">원문 보기</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="5" class="text-center py-10 text-[var(--text-secondary)]">검색 결과가 없습니다.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

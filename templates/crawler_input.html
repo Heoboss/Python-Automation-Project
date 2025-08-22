@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}채용공고 요약{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-xl mx-auto p-4 sm:p-8">
+    <div class="bg-[var(--bg-card)] p-10 rounded-2xl shadow-lg text-center border border-[var(--border-color)]">
+        <h1 class="text-4xl font-bold text-[var(--text-main)] mb-2">채용공고 요약</h1>
+        <p class="text-[var(--text-secondary)] mb-8">원하는 채용 정보를 간편하게 요약해 드립니다.</p>
+        
+        <form action="{{ url_for('start_scrape') }}" method="get" class="space-y-6">
+            <div>
+                <label for="keyword" class="block text-left text-lg font-medium text-[var(--text-secondary)] mb-2">검색할 키워드</label>
+                <input type="text" name="keyword" id="keyword" required placeholder="예: python, verilog, 프론트엔드" 
+                       class="block w-full px-5 py-4 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition text-lg text-[var(--text-main)]">
+            </div>
+
+            <div>
+                <label for="count" class="block text-left text-lg font-medium text-[var(--text-secondary)] mb-2">요약할 공고 개수</label>
+                <input type="number" name="count" id="count" required min="1" max="50" value="10" 
+                       class="block w-full px-5 py-4 bg-[var(--bg-input)] border border-[var(--border-input)] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition text-lg text-[var(--text-main)]">
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xl py-4 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--bg-card)] focus:ring-purple-500 transition duration-300">
+                요약 시작하기
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

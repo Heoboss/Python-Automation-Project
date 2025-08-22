@@ -1,0 +1,262 @@
+{% extends 'layout.html' %}
+
+{% block title %}'{{ company_name }}' 재무정보 조회 결과{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+
+<div class="max-w-4xl mx-auto">
+    <div class="bg-[var(--bg-card)] p-6 rounded-xl shadow-lg border border-[var(--border-color)] mb-8">
+        <h1 class="text-2xl sm:text-3xl font-bold text-[var(--text-main)] mb-2">
+            <span class="text-indigo-400">'{{ company_name }}'</span> 조회 결과
+        </h1>
+        <p class="text-[var(--text-secondary)]">법인등록번호: {{ crno }}</p>
+    </div>
+
+    <div class="bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border-color)] mb-8">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-bold text-[var(--text-main)]">&lt;기업재무정보&gt;</h2>
+            {% if results %}
+                <button id="toggleFinanceBtn" class="text-sm px-3 py-1.5 rounded-md border border-indigo-600 text-indigo-400 hover:bg-[var(--nav-hover-bg)] transition">펼치기</button>
+            {% endif %}
+        </div>
+
+        {% if results %}
+        <div id="financeBody" class="mt-4 hidden">
+            <div class="space-y-6">
+                {% for r in results %}
+                <div class="bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border-color)]">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                        {% set finance_map = {
+                            "bizYear": "사업연도", "basDt": "기준일", "curCd": "통화",
+                            "fnclDcdNm": "재무구분", "enpSaleAmt": "매출액", "enpBzopPft": "영업이익",
+                            "enpTastAmt": "자산총계", "enpTdbtAmt": "부채총계", "enpTcptAmt": "자본총계"
+                        } %}
+                        {% for key, label in finance_map.items() %}
+                        <div class="p-3 bg-[var(--bg-nav)] rounded-md shadow-sm">
+                            <p class="font-semibold text-[var(--text-secondary)]">{{ label }}</p>
+                            <p class="text-lg text-[var(--text-main)]">
+                                {% if key == 'basDt' %}{{ fmt_date8(r[key]) }}
+                                {% elif key in ['enpSaleAmt', 'enpBzopPft', 'enpTastAmt', 'enpTdbtAmt', 'enpTcptAmt'] %}{{ comma(r[key]) }}
+                                {% else %}{{ r[key] or '-' }}{% endif %}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="mt-3 py-3 text-sm text-[var(--text-secondary)]">기업재무정보 검색결과가 없습니다.</div>
+        {% endif %}
+    </div>
+
+    {% if chart_bundle %}
+    <div class="mt-4 bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border-color)]">
+        <h2 class="text-xl font-bold text-[var(--text-main)]">&lt;재무 그래프&gt;</h2>
+        <p id="graphMeta" class="text-xs text-[var(--text-secondary)] mb-4"></p>
+        <div id="noDataMsg" class="hidden text-sm text-[var(--text-secondary)] mb-4"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-4 rounded-lg border border-[var(--border-color)]"><h4 class="font-semibold mb-2 text-[var(--text-main)]">매출 &amp; 영업이익</h4><canvas id="salesOpChart" height="220"></canvas></div>
+            <div class="p-4 rounded-lg border border-[var(--border-color)]"><h4 class="font-semibold mb-2 text-[var(--text-main)]">자산 / 부채 / 자본</h4><canvas id="bsChart" height="220"></canvas></div>
+            <div class="p-4 rounded-lg border border-[var(--border-color)] md:col-span-2"><h4 class="font-semibold mb-2 text-[var(--text-main)]">영업이익률 · 부채비율(%)</h4><canvas id="ratioChart" height="220"></canvas></div>
+        </div>
+    </div>
+    <script id="bundle-data" type="application/json">{{ chart_bundle | tojson }}</script>
+    <script>
+        let charts = {};
+
+        function getChartColors() {
+            const computedStyle = getComputedStyle(document.body);
+            return {
+                main: computedStyle.getPropertyValue('--text-main').trim(),
+                secondary: computedStyle.getPropertyValue('--text-secondary').trim(),
+                border: computedStyle.getPropertyValue('--border-color').trim(),
+            };
+        }
+
+        function renderCharts() {
+            const colors = getChartColors();
+            const BUNDLE = JSON.parse(document.getElementById('bundle-data').textContent);
+            const PREFS = [() => [BUNDLE?.meta?.default_frequency || 'annual', BUNDLE?.meta?.default_consol || 'CFS'], () => ['annual','CFS'], () => ['annual','OFS'], () => ['quarterly','CFS'], () => ['quarterly','OFS']];
+            
+            function hasData(d) { return d && Array.isArray(d.labels) && d.labels.length > 0; }
+            function pickBest() {
+                for (const f of PREFS) { const [freq, cons] = f(); const cand = (BUNDLE?.[freq] || {})[cons]; if (hasData(cand)) return {freq, cons, data: cand}; }
+                return {freq: null, cons: null, data: null};
+            }
+            const picked = pickBest();
+
+            const graphMeta = document.getElementById('graphMeta');
+            const noDataMsg = document.getElementById('noDataMsg');
+            let unitLabel = '원';
+
+            function fmtNumber(v) { if (v == null || isNaN(v)) return '-'; return Number(v).toLocaleString(); }
+            
+            Chart.defaults.color = colors.secondary;
+            Chart.defaults.borderColor = colors.border;
+
+            if (!picked.data) {
+                noDataMsg.textContent = '그래프를 표시할 데이터가 없습니다.';
+                noDataMsg.classList.remove('hidden');
+                graphMeta.textContent = '';
+                return;
+            }
+            noDataMsg.classList.add('hidden');
+
+            const labels = picked.data.labels || [];
+            const sales = picked.data.sales || [];
+            const op = picked.data.op || [];
+            const assets = picked.data.assets || [];
+            const debt = picked.data.debt || [];
+            const equity = picked.data.equity || [];
+
+            const consText = picked.cons === 'CFS' ? '연결(CFS)' : '별도(OFS)';
+            const freqText = picked.freq === 'quarterly' ? '분기' : '연간';
+            graphMeta.textContent = `표시 기준: ${consText} · ${freqText} · 단위: ${unitLabel} (라인: %)`;
+            
+            const legendLabelsColor = colors.main;
+
+            // 차트 1: 매출 & 영업이익
+            if (charts.salesOp) charts.salesOp.destroy();
+            charts.salesOp = new Chart(document.getElementById('salesOpChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: `매출액 (${unitLabel})`,
+                        data: sales,
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)'
+                    }, {
+                        label: `영업이익 (${unitLabel})`,
+                        data: op,
+                        backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                        borderColor: 'rgba(16, 185, 129, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'top', labels: { color: legendLabelsColor, boxBackground: '#FFFFFF' } },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${fmtNumber(ctx.raw)}` } }
+                    },
+                    scales: {
+                        x: { ticks: { color: colors.secondary }, grid: { color: colors.border } },
+                        y: { beginAtZero: true, ticks: { callback: (v) => fmtNumber(v), color: colors.secondary }, grid: { color: colors.border } }
+                    }
+                }
+            });
+
+            // 차트 2: 자산 / 부채 / 자본
+            if (charts.bs) charts.bs.destroy();
+            charts.bs = new Chart(document.getElementById('bsChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: `자산총계 (${unitLabel})`,
+                        data: assets,
+                        backgroundColor: 'rgba(139, 92, 246, 0.5)',
+                        borderColor: 'rgba(139, 92, 246, 1)'
+                    }, {
+                        label: `부채총계 (${unitLabel})`,
+                        data: debt,
+                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
+                        borderColor: 'rgba(239, 68, 68, 1)'
+                    }, {
+                        label: `자본총계 (${unitLabel})`,
+                        data: equity,
+                        backgroundColor: 'rgba(245, 158, 11, 0.5)',
+                        borderColor: 'rgba(245, 158, 11, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top', labels: { color: legendLabelsColor, boxBackground: '#FFFFFF' } },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${fmtNumber(ctx.raw)}` } }
+                    },
+                    scales: {
+                        x: { ticks: { color: colors.secondary }, grid: { color: colors.border } },
+                        y: { beginAtZero: true, ticks: { callback: (v) => fmtNumber(v), color: colors.secondary }, grid: { color: colors.border } }
+                    }
+                }
+            });
+
+            // 차트 3: 영업이익률 · 부채비율(%)
+            if (charts.ratio) charts.ratio.destroy();
+            charts.ratio = new Chart(document.getElementById('ratioChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: '영업이익률(%)',
+                        data: picked.data.op_margin,
+                        yAxisID: 'y',
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        tension: 0.1
+                    }, {
+                        label: '부채비율(%)',
+                        data: picked.data.debt_ratio,
+                        yAxisID: 'y1',
+                        borderColor: 'rgba(236, 72, 153, 1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'top', labels: { color: legendLabelsColor, boxBackground: '#FFFFFF' } },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw ?? '-'}%` } }
+                    },
+                    scales: {
+                        x: { ticks: { color: colors.secondary }, grid: { color: colors.border } },
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: '%', color: colors.secondary },
+                            ticks: { color: colors.secondary },
+                            grid: { color: colors.border }
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: 'right',
+                            grid: { drawOnChartArea: false, color: colors.border },
+                            title: { display: true, text: '%', color: colors.secondary },
+                            ticks: { color: colors.secondary }
+                        }
+                    }
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // 재무정보 토글
+            const btn = document.getElementById('toggleFinanceBtn');
+            const body = document.getElementById('financeBody');
+            if (btn && body) {
+                btn.addEventListener('click', () => {
+                    const hidden = body.classList.toggle('hidden');
+                    btn.textContent = hidden ? '펼치기' : '접기';
+                });
+            }
+
+            // 초기 로드 시 차트 렌더링
+            renderCharts();
+        });
+
+        // 테마가 변경될 때마다 차트 색상을 업데이트하고 다시 그림
+        document.addEventListener('theme-changed', renderCharts);
+    </script>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{{ url_for('finance_page') }}" class="inline-block bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-indigo-700 transition duration-300">
+            다른 기업 조회하기
+        </a>
+    </div>
+</div>
+{% endblock %}
