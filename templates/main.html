@@ -1,0 +1,305 @@
+{% extends 'layout.html' %}
+
+{% block title %}서비스 선택{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-5xl mx-auto p-8">
+
+    <div class="text-center mb-16">
+        <h1 class="text-5xl font-extrabold mb-4 text-[var(--text-main)]">
+            당신의 성공적인 취업을 위한
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-500">
+                모든 솔루션
+            </span>
+        </h1>
+        <p class="text-[var(--text-secondary)] text-lg max-w-5xl mx-auto">
+            채용 공고 요약부터 기업정보 조회, 최신 뉴스와 강의 검색, 공고 알리미까지 <br/>
+            취업 준비의 모든 과정을 한 곳에서 해결하세요.
+        </p>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="bg-[var(--bg-card)] border-l-4 border-indigo-500 text-[var(--text-main)] p-4 mb-6 rounded-lg shadow" role="alert">
+        <p class="font-bold">알림</p><p>{{ messages[0] }}</p>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-[var(--bg-card)] p-8 rounded-2xl shadow-lg text-center flex flex-col justify-between">
+            <div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">⭐ 채용공고 요약</h3>
+                <p class="text-[var(--text-secondary)] mb-6">채용 정보를 검색하고 요약하여 모아줍니다.</p>
+            </div>
+            <a href="{{ url_for('crawler_page') }}" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition">시작하기</a>
+        </div>
+
+        <div class="bg-[var(--bg-card)] p-8 rounded-2xl shadow-lg text-center flex flex-col justify-between">
+            <div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">📈 기업 재무정보 조회</h3>
+                <p class="text-[var(--text-secondary)] mb-6">기업명으로 요약 재무제표를 조회합니다.</p>
+            </div>
+            <a href="{{ url_for('finance_page') }}" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition">시작하기</a>
+        </div>
+
+        <div class="bg-[var(--bg-card)] p-8 rounded-2xl shadow-lg text-center flex flex-col justify-between">
+            <div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">📚 인프런 강의 검색</h3>
+                <p class="text-[var(--text-secondary)] mb-6">듣고 싶은 강의를 키워드로 검색해보세요.</p>
+            </div>
+            <a href="{{ url_for('inflearn_page') }}" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition">검색하기</a>
+        </div>
+
+        <div class="bg-[var(--bg-card)] p-8 rounded-2xl shadow-lg text-center flex flex-col justify-between">
+            <div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">📰 뉴스 검색</h3>
+                <p class="text-[var(--text-secondary)] mb-6">키워드로 최신 뉴스를 바로 확인합니다.</p>
+            </div>
+            <a href="{{ url_for('news_page') }}" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition">검색하기</a>
+        </div>
+    </div>
+
+    <div class="mt-8 bg-[var(--bg-card)] p-8 rounded-2xl shadow-lg">
+        <h3 class="text-2xl font-bold text-[var(--text-main)] mb-2 text-center">📢 채용 공고 자동 알림</h3>
+        <p class="text-[var(--text-secondary)] mb-6 text-center">원하는 조건의 채용 공고를 매일 아침 카카오톡으로 받아보세요.</p>
+
+        <form id="alarmForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="keyword" class="block text-sm font-normal text-[var(--text-secondary)]">키워드</label>
+                    <input
+                        type="text" id="keyword" name="keyword" placeholder="예: python, verilog, JavaScript"
+                        class="mt-1 block w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] text-[var(--text-main)] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                </div>
+                <div>
+                    <label for="count" class="block text-sm font-normal text-[var(--text-secondary)]">검색 개수</label>
+                    <input
+                        type="number" id="count" name="count" min="1" step="1" placeholder="예: 30"
+                        class="mt-1 block w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] text-[var(--text-main)] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="send_time" class="block text-sm font-normal text-[var(--text-secondary)]">전송 시간</label>
+                    <input
+                        type="time" id="send_time" name="send_time"
+                        class="mt-1 block w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] text-[var(--text-main)] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <p class="text-xs text-[var(--text-secondary)] mt-1">예: 09:00 (예약 전송 시 필수)</p>
+                </div>
+                <div>
+                    <label for="max_dday" class="block text-sm font-normal text-[var(--text-secondary)]">마감 D-이내</label>
+                    <input
+                        type="number" id="max_dday" name="max_dday" min="0" placeholder="예: 7"
+                        class="mt-1 block w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] text-[var(--text-main)] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                </div>
+                <div>
+                    <label for="batch_size" class="block text-sm font-normal text-[var(--text-secondary)]">카카오 묶음 전송 개수</label>
+                    <input
+                        type="number" id="batch_size" name="batch_size" min="1" placeholder="4개 이하로 입력하세요"
+                        class="mt-1 block w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-input)] text-[var(--text-main)] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-start">
+                    <input id="only_fresher" name="only_fresher" type="checkbox" value="1"
+                           class="h-4 w-4 text-indigo-600 bg-[var(--bg-nav)] border-[var(--border-color)] rounded focus:ring-indigo-500" checked
+                           onclick="if (this.checked) { document.getElementById('edu_only').checked = false; }"/>
+                    <label for="only_fresher" class="ml-3 text-sm font-normal text-[var(--text-secondary)]">신입/경력무관 공고만 보기</label>
+                </div>
+
+                <div class="flex items-start">
+                    <input id="edu_only" name="edu_only" type="checkbox"
+                           class="h-4 w-4 text-indigo-600 bg-[var(--bg-nav)] border-[var(--border-color)] rounded focus:ring-indigo-500"
+                           onclick="if (this.checked) { document.getElementById('only_fresher').checked = false; }"/>
+                    <label for="edu_only" class="ml-3 text-sm font-normal text-[var(--text-secondary)]">교육/취업연계 공고만 보기</label>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm font-normal text-[var(--text-secondary)]">알림</span>
+                    <label class="text-[var(--text-secondary)]">
+                        <input type="radio" name="enabled" value="1"
+                               class="h-4 w-4 text-indigo-600 bg-[var(--bg-nav)] border-[var(--border-color)] focus:ring-indigo-500" checked />
+                        켜기
+                    </label>
+                    <label class="text-[var(--text-secondary)]">
+                        <input type="radio" name="enabled" value="0"
+                               class="h-4 w-4 text-indigo-600 bg-[var(--bg-nav)] border-[var(--border-color)] focus:ring-indigo-500" />
+                        끄기
+                    </label>
+                </div>
+            </div>
+
+            <p id="scheduleHint"
+               class="text-sm text-[var(--text-secondary)] mt-2 {% if not next_run %}hidden{% endif %}">
+                {% if next_run %}다음 예약 전송: {{ next_run }}{% endif %}
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-4 pt-4">
+                <button id="btn-save" type="button"
+                        class="w-full bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-600 transition">
+                    알림 설정 저장
+                </button>
+
+                <button id="btn-send-now" type="button"
+                        class="w-full bg-gray-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-600 transition">
+                    지금 즉시 받아보기
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modal" class="fixed inset-0 bg-black/40 hidden z-50">
+    <div class="min-h-screen w-full flex items-center justify-center p-4">
+        <div class="bg-[var(--bg-card)] rounded-xl p-6 w-full max-w-md shadow-xl text-center">
+            <div id="modalIcon" class="mx-auto mb-3">
+                <svg class="animate-spin h-8 w-8 mx-auto text-indigo-400" viewBox="0 0 24 24" fill="none">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+            </div>
+            <h4 id="modalTitle" class="text-lg font-bold text-[var(--text-main)]">처리 중…</h4>
+            <p id="modalText" class="text-[var(--text-secondary)] mt-1">잠시만 기다려주세요.</p>
+            <div class="mt-4 hidden" id="modalButtons">
+                <button id="modalClose" class="px-4 py-2 rounded-lg bg-[var(--bg-nav)] text-white hover:bg-[var(--nav-hover-bg)]">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 hidden bg-[var(--bg-nav)] text-white text-sm px-4 py-2 rounded-lg shadow"></div>
+
+<script>
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    // 모달/토스트
+    const showModal = (title, text, spinning=true) => {
+        $("#modalTitle").textContent = title || "";
+        $("#modalText").textContent = text || "";
+        $("#modalButtons").classList.add("hidden");
+        $("#modal").classList.remove("hidden");
+        $("#modalIcon").innerHTML = spinning
+                ? `<svg class="animate-spin h-8 w-8 mx-auto text-indigo-400" viewBox="0 0 24 24" fill="none">
+                       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                       <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                   </svg>`
+                : `<svg class="h-8 w-8 mx-auto text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                       <path d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg>`;
+    };
+    const finishModal = (title, text, ok=true) => {
+        $("#modalTitle").textContent = title || (ok ? "완료" : "실패");
+        $("#modalText").textContent = text || "";
+        $("#modalButtons").classList.remove("hidden");
+        $("#modalIcon").innerHTML = ok
+                ? `<svg class="h-8 w-8 mx-auto text-green-600" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg>`
+                : `<svg class="h-8 w-8 mx-auto text-red-600" viewBox="0 0 24 24" fill="currentColor"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+    };
+    $("#modalClose").addEventListener("click", ()=> $("#modal").classList.add("hidden"));
+    const toast = (msg) => { const el = $("#toast"); el.textContent = msg; el.classList.remove("hidden"); setTimeout(()=> el.classList.add("hidden"), 2200); };
+
+    // 유효성
+    function bump(el){ el.classList.add("ring-2","ring-red-500"); setTimeout(()=> el.classList.remove("ring-2","ring-red-500"), 1500); el.focus(); }
+    function requireNotEmpty(el, label){ const v=(el.value||"").trim(); if(!v){ showModal("입력 필요",`‘${label}’ 값을 입력해주세요.`,false); $("#modalButtons").classList.remove("hidden"); bump(el); return false;} return true; }
+    function requirePositiveInt(el, label){ const v=(el.value||"").trim(); if(!v||isNaN(v)||parseInt(v)<=0){ showModal("입력 필요",`‘${label}’는 1 이상의 숫자를 입력해주세요.`,false); $("#modalButtons").classList.remove("hidden"); bump(el); return false;} return true; }
+
+    // 예약 표시
+    function updateScheduleUI(state){
+        const el = $("#scheduleHint");
+        const enabled = !!state?.enabled;
+        const nextRun = state?.next_run;
+        if (enabled && nextRun){
+            const daily = state?.send_time ? ` (매일 ${state.send_time})` : "";
+            el.textContent = `다음 예약 전송: ${nextRun}${daily}`;
+            el.classList.remove("hidden");
+        } else {
+            el.textContent = "";
+            el.classList.add("hidden");
+        }
+    }
+    async function refreshScheduleFromServer(){
+        try{
+            const res = await fetch("{{ url_for('api_schedule_status') }}", {headers: {"X-Requested-With":"XMLHttpRequest"}});
+            if(!res.ok) return;
+            const data = await res.json();
+            updateScheduleUI(data);
+        }catch(_){}
+    }
+    document.addEventListener("DOMContentLoaded", refreshScheduleFromServer);
+    $$("input[name='enabled']").forEach(r=>{
+        r.addEventListener("change",(e)=>{ if(e.target.value==="0") updateScheduleUI({enabled:false}); else refreshScheduleFromServer(); });
+    });
+
+    // 폼 값 수집
+    function formValues(){
+        const fd = new URLSearchParams();
+        fd.set("keyword", ($("#keyword").value||"").trim());
+        fd.set("count", ($("#count").value||"").trim());
+        fd.set("send_time", ($("#send_time").value||"").trim());
+        fd.set("max_dday", ($("#max_dday").value||"7").trim());
+        fd.set("batch_size", ($("#batch_size").value||"").trim());
+
+        // 'edu_only'가 체크되었으면 'only_fresher'는 무조건 false로 설정
+        const eduOnlyChecked = $("#edu_only").checked;
+        fd.set("edu_mode", eduOnlyChecked ? "only" : "exclude");
+        fd.set("only_fresher", eduOnlyChecked ? "0" : ($("#only_fresher").checked ? "1" : "0"));
+
+        const en = document.querySelector("input[name='enabled']:checked");
+        if (en) fd.set("enabled", en.value);
+        return fd;
+    }
+
+    // 즉시 전송
+    $("#btn-send-now").addEventListener("click", async ()=>{
+        if(!requireNotEmpty($("#keyword"),"키워드")) return;
+        if(!requirePositiveInt($("#count"),"검색 개수")) return;
+        if(!requirePositiveInt($("#max_dday"),"마감 D-이내")) return;
+        if(!requirePositiveInt($("#batch_size"),"카카오 묶음 전송 개수")) return;
+
+        const body = formValues();
+        body.set("ajax","1");
+        showModal("보내는 중…","최신 공고를 수집하여 카카오톡으로 전송합니다.",true);
+        try{
+            const res = await fetch("{{ url_for('send_kakao_now') }}", {
+                method:"POST",
+                headers:{ "X-Requested-With":"XMLHttpRequest","Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+                body: body.toString()
+            });
+            const data = await res.json();
+            if(res.ok && data.ok){ finishModal("전송 완료",`카카오톡으로 ${data.sent||0}건을 보냈습니다.`); toast("카카오톡 전송이 완료되었습니다."); }
+            else { finishModal("전송 실패", data.reason||data.message||"잠시 후 다시 시도해주세요.", false); }
+        }catch(e){ finishModal("전송 실패", e.message||"네트워크 오류입니다.", false); }
+    });
+
+    // 예약 저장
+    $("#btn-save").addEventListener("click", async ()=>{
+        if(!requireNotEmpty($("#keyword"),"키워드")) return;
+        if(!requirePositiveInt($("#count"),"검색 개수")) return;
+        if(!requireNotEmpty($("#send_time"),"전송 시간")) return;
+        if(!requirePositiveInt($("#max_dday"),"마감 D-이내")) return;
+        if(!requirePositiveInt($("#batch_size"),"카카오 묶음 전송 개수")) return;
+
+        const vals = formValues();
+        const time = vals.get("send_time");
+        showModal("저장 중…",`매일 ${time}에 카카오 알림을 보내도록 설정합니다.`,true);
+        try{
+            const res = await fetch("{{ url_for('subscribe_kakao') }}", {
+                method:"POST",
+                headers:{ "X-Requested-With":"XMLHttpRequest","Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+                body: vals.toString()
+            });
+            const data = await res.json();
+            if(res.ok && data.ok){
+                finishModal("설정 완료", data.message || "알림 설정이 저장되었습니다.");
+                toast("알림 설정이 저장되었어요.");
+                updateScheduleUI({enabled: data?.pref?.enabled, next_run: data?.next_run, send_time: data?.pref?.send_time});
+            }else{
+                finishModal("설정 실패", data.message || "잠시 후 다시 시도해주세요.", false);
+            }
+        }catch(e){ finishModal("설정 실패", e.message||"네트워크 오류입니다.", false); }
+    });
+</script>
+{% endblock %}
