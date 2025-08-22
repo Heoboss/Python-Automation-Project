@@ -1,0 +1,41 @@
+{
+  "1234": {
+    "keyword": "python",
+    "count": 40,
+    "only_fresher": true,
+    "max_dday": 30,
+    "batch_size": 4,
+    "send_time": "15:47",
+    "enabled": true,
+    "edu_mode": "exclude"
+  },
+  "123456": {
+    "keyword": "빅데이터",
+    "count": 3,
+    "only_fresher": true,
+    "max_dday": 7,
+    "batch_size": 1,
+    "send_time": "13:37",
+    "enabled": true
+  },
+  "ABCD": {
+    "keyword": "python",
+    "count": 40,
+    "only_fresher": true,
+    "max_dday": 30,
+    "batch_size": 4,
+    "send_time": "16:06",
+    "enabled": true,
+    "edu_mode": "exclude"
+  },
+  "harman": {
+    "keyword": "python",
+    "count": 40,
+    "only_fresher": true,
+    "max_dday": 30,
+    "batch_size": 4,
+    "send_time": "15:52",
+    "enabled": true,
+    "edu_mode": "exclude"
+  }
+}
