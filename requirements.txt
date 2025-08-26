@@ -1,0 +1,14 @@
+Flask Web Framework
+Flask
+
+Environment Variables
+python-dotenv
+
+Web Scraping & HTTP Requests
+requests
+beautifulsoup4
+selenium
+webdriver-manager
+
+Timezone data for zoneinfo (Standard Library)
+tzdata
