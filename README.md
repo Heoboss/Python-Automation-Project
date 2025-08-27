@@ -39,14 +39,25 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 <br>
 
 ## 🎥 서비스 시연 (Live Demo)
-
-이 서비스의 주요 기능인 **통합 채용 공고 검색**, **기업 정보 조회**, **다크 모드** 전환 과정을 간략한 GIF로 확인해보세요.
-
+이 서비스의 주요 기능인 **통합 채용 공고 검색**, **기업 정보 조회**, **다크 모드**, **인프런 강의검색** 과정을 간략한 GIF로 확인해보세요.
 * **라이트/다크 모드**
-![다크모드 (1)](https://github.com/user-attachments/assets/0da82dbe-9d8c-414f-a4f2-dcab59da3939)
+    <br/>
+    <img src="https://github.com/user-attachments/assets/0da82dbe-9d8c-414f-a4f2-dcab59da3939" width="800px" alt="다크모드 시연">
 * **로그인/회원가입**
-![로그인_cropped](https://github.com/user-attachments/assets/f977832e-2d5c-4952-a354-20cbddf718f9)
+    <br/>
+    <img src="https://github.com/user-attachments/assets/f977832e-2d5c-4952-a354-20cbddf718f9" width="800px" alt="로그인/회원가입 시연">
 * **채용공고 요약 서비스**
+    <br/>
+    <img src="https://github.com/user-attachments/assets/0b0ecd44-1769-48f0-bb12-55720a756432" width="800px" alt="채용공고 검색 및 요약 시연">
+* **기업정보 조회**
+    <br/>
+    <img src="https://github.com/user-attachments/assets/baba4299-0768-4b4c-accb-d83abba5dcce" width="800px" alt="기업 정보 조회 시연">
+* **인프런 강의 검색 서비스**
+    <br/>
+    <img src="https://github.com/user-attachments/assets/fd51a2f-a30d-43f2-a998-e54eb7a4685b" width="800px" alt="인프런 강의 검색 시연">
+* **IT/과학 뉴스 서비스**
+    <br/>
+    <img src="https://github.com/user-attachments/assets/076bdb0b-cb59-4df2-9462-35bb4826149f" width="800px" alt="IT/과학 뉴스 검색 시연">
 
 
 <br>
@@ -145,6 +156,6 @@ python3 app.py
 
 * \[ \] **AI 면접 연습 기능 추가:** 사용자가 웹캠을 통해 AI와 모의 면접을 진행하고 피드백을 받는 기능
 * \[ \] **이력서 자동 완성 기능:** 주요 경력과 스킬을 입력하면 AI가 매력적인 자기소개서 초안을 작성해주는 기능
-* \[ \] **카카오톡 알림 기능 고도화:** 사용자가 설정한 조건에 맞는 공고를 매일 정해진 시간에 카카오톡으로 받아보는 기능 완성
+* \[ \] **카카오톡 채널 개설:** 카카오톡 채널 개설을 통해 실제 사용자에게 공고 알림 서비스를 제공
 * \[ \] **데이터베이스 연동:** 사용자별 검색 기록, 저장한 공고 등을 관리하기 위해 `users.json` 대신 `SQLite`나 `PostgreSQL` 같은 데이터베이스 연동
     
