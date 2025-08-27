@@ -40,12 +40,12 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 
 ## 🚀 시작하기 (Getting Started)
 
-프로젝트를 로컬 환경에서 실행하는 방법은 다음과 같습니다.
+### 1. 로컬 환경에서 실행하기 (Local Development)
 
 **1. 저장소 복제**
 ```bash
-git clone [https://github.com/your-username/your-repository-name.git](https://github.com/your-username/your-repository-name.git)
-cd your-repository-name
+git clone https://github.com/Heoboss/Python-Automation-Project.git
+cd Python-Automation-Project
 ```
 
 **2. 가상 환경 생성 및 활성화**
@@ -67,10 +67,64 @@ pip install -r requirements.txt
 
 **4. Flask 앱 실행**
 ```bash
-python app.py
+python3 app.py
 ```
-이제 웹 브라우저에서 `http://127.0.0.1:4000`으로 접속하여 서비스를 확인할 수 있습니다.
+이제 웹 브라우저에서 `http://127.0.0.1:5000`으로 접속하여 서비스를 확인할 수 있습니다.
 
+### 2. 서버 환경에 배포하기 (Server Deployment)
+
+**1. 저장소 복제**
+```bash
+git clone https://github.com/Heoboss/Python-Automation-Project.git
+cd Python-Automation-Project
+```
+**2. 시스템 기본 패키지 설치**
+```bash
+sudo apt update
+sudo apt install python3-pip -y
+```
+**3. 의존성 설치**
+```bash
+pip install -r requirements.txt
+```
+
+**4. 크롬 브라우저 및 드라이버 설치**
+Selenium이 크롤링에 사용할 크롬 브라우저를 서버에 설치합니다. webdriver-manager가 드라이버를 자동으로 관리해줍니다.
+```bash
+# 구글 크롬 최신 안정화 버전을 다운로드합니다.
+wget [https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb](https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb)
+
+# 다운로드한 패키지를 설치합니다. (-y 플래그로 모든 질문에 'yes'로 자동 응답)
+sudo apt install ./google-chrome-stable_current_amd64.deb -y
+
+# 설치에 사용된 파일을 삭제합니다.
+rm google-chrome-stable_current_amd64.deb
+```
+
+**5. 스왑 파일(Swap File) 생성**
+메모리가 작은 서버(예: 1GB RAM)에서 메모리 부족으로 인해 크롤러 작동 중 서버가 멈추는 현상을 방지합니다.
+```bash
+# 2GB 크기의 스왑 파일을 생성합니다.
+sudo fallocate -l 2G /swapfile
+
+# 파일 권한을 설정합니다.
+sudo chmod 600 /swapfile
+
+# 이 파일을 스왑 영역으로 지정합니다.
+sudo mkswap /swapfile
+
+# 스왑 파일을 시스템에서 활성화합니다.
+sudo swapon /swapfile
+
+# 서버가 재부팅되어도 스왑 설정이 유지되도록 /etc/fstab 파일에 등록합니다.
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+**6. Flask 앱 실행**
+```bash
+python3 app.py
+```
+이제 웹 브라우저에서 `http://퍼블릭Ipv4주소:5000`으로 접속하여 서비스를 확인할 수 있습니다.
 <br>
 
 ## 💡 향후 개선 계획 (Future Work)
