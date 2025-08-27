@@ -65,6 +65,9 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 
 ![뉴스_편집점](https://github.com/user-attachments/assets/e17e8f9f-e591-449e-93d5-1d191bfa8985)
 
+* **카카오톡으로 공고 받기 서비스**
+
+![카카오톡_즉시받아보기_편집후](https://github.com/user-attachments/assets/36e7f249-41d2-4d1a-90b9-9fefbe37d99c)
 
 <br>
 
