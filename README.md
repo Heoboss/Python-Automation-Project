@@ -73,11 +73,11 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 
 
 ## ⚡ 트러블 슈팅 (Trouble Shooting)
-* 속도개선 1. aws ec2의 인스턴스 중 무료 플랜 한도내에서 가장 좋은 인스턴스인 m7i-flex.large를 사용하여 1GB -> 8GB의 ram 업그레이드로 크롤링 속도 향상
+* 속도개선 1. aws ec2의 인스턴스 중 무료 플랜 한도내에서 가장 좋은 인스턴스인 m7i-flex.large를 사용하여 1GB -> 8GB의 ram 업그레이드로 크롤링 속도 30% 향상
 
 ![속도비교_real](https://github.com/user-attachments/assets/45b02151-6816-4bd9-b548-cbba82a53ae3)
 
-* 속도개선 2. 3개의 사이트를 순차적(sequential)으로 크롤링하지않고 멀티스레딩방식으로 병렬로 처리하여 속도 대폭 향상
+* 속도개선 2. 3개의 사이트를 순차적(sequential)으로 크롤링하지않고 멀티스레딩방식으로 병렬로 처리하여 속도 50% 향상
 
 ![속도개선2](https://github.com/user-attachments/assets/65b8a371-0a85-43c3-8eb8-8a488007bbf3)
 
