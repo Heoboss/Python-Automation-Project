@@ -1,0 +1,16 @@
+# Web Framework
+Flask
+
+# Environment Variables
+python-dotenv
+
+# Web Scraping & Automation
+selenium
+beautifulsoup4
+webdriver-manager
+requests
+urllib3
+chardet
+
+# Job Scheduling
+APScheduler
