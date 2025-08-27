@@ -94,7 +94,6 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-*(주: `requirements.txt` 파일이 없다면 `pip freeze > requirements.txt` 명령어로 생성해주세요.)*
 
 **4. Flask 앱 실행**
 ```bash
@@ -103,6 +102,8 @@ python3 app.py
 이제 웹 브라우저에서 `http://127.0.0.1:5000`으로 접속하여 서비스를 확인할 수 있습니다.
 
 ### 2. 서버 환경에 배포하기 (Server Deployment)
+*(AWS EC2 t3.micro 인스턴스환경에서 Ubuntu 22.04 LTS으로 진행했습니다.)*
+
 
 **1. 저장소 복제**
 ```bash
