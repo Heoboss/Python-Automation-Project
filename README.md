@@ -40,26 +40,30 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 
 ## 🎥 서비스 시연 (Live Demo)
 이 서비스의 주요 기능인 **통합 채용 공고 검색**, **기업 정보 조회**, **다크 모드**, **인프런 강의검색** 과정을 간략한 GIF로 확인해보세요.
-* **라이트/다크 모드**
-    <br/>
-    <img src="https://github.com/user-attachments/assets/0da82dbe-9d8c-414f-a4f2-dcab59da3939" width="800px" alt="다크모드 시연">
-* **로그인/회원가입**
-    <br/>
-    <img src="https://github.com/user-attachments/assets/f977832e-2d5c-4952-a354-20cbddf718f9" width="800px" alt="로그인/회원가입 시연">
-* **채용공고 요약 서비스**
-    <br/>
-    <img src="https://github.com/user-attachments/assets/0b0ecd44-1769-48f0-bb12-55720a756432" width="800px" alt="채용공고 검색 및 요약 시연">
-* **기업정보 조회**
-    <br/>
-    <img src="https://github.com/user-attachments/assets/baba4299-0768-4b4c-accb-d83abba5dcce" width="800px" alt="기업 정보 조회 시연">
-* **인프런 강의 검색 서비스**
-    <br/>
-    ![인프런강의_편집전](https://github.com/user-attachments/assets/def8d096-7208-48f6-b21e-45803445d91e)
 
-    <img src="https://github.com/user-attachments/assets/fd51a2f-a30d-43f2-a998-e54eb7a4685b" width="800px" alt="인프런 강의 검색 시연">
+* **라이트/다크 모드**
+
+![다크모드 (1)](https://github.com/user-attachments/assets/54ae8dbf-0ae4-4c21-81cd-03cc96c81fe8)
+
+* **로그인/회원가입**
+
+![로그인_cropped](https://github.com/user-attachments/assets/eda39a94-35eb-4d8c-a549-e225dc463bc6)
+
+* **채용공고 요약 서비스**
+
+![채용공고검색_편집후](https://github.com/user-attachments/assets/939c7ed5-781d-486f-b9be-3be70b631d8d)
+
+* **기업정보 조회**
+
+![기업정보_편집전](https://github.com/user-attachments/assets/d90a101a-f76f-4cf7-aa7f-39ae565c10c0)
+
+* **인프런 강의 검색 서비스**
+
+![인프런강의_편집전](https://github.com/user-attachments/assets/a7fb8ed3-c820-4f9d-964f-b7f1f3fdeeaa)
+
 * **IT/과학 뉴스 서비스**
-    <br/>
-    <img src="https://github.com/user-attachments/assets/076bdb0b-cb59-4df2-9462-35bb4826149f" width="800px" alt="IT/과학 뉴스 검색 시연">
+
+![뉴스_편집점](https://github.com/user-attachments/assets/e17e8f9f-e591-449e-93d5-1d191bfa8985)
 
 
 <br>
