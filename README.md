@@ -54,6 +54,8 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
     <img src="https://github.com/user-attachments/assets/baba4299-0768-4b4c-accb-d83abba5dcce" width="800px" alt="기업 정보 조회 시연">
 * **인프런 강의 검색 서비스**
     <br/>
+    ![인프런강의_편집전](https://github.com/user-attachments/assets/def8d096-7208-48f6-b21e-45803445d91e)
+
     <img src="https://github.com/user-attachments/assets/fd51a2f-a30d-43f2-a998-e54eb7a4685b" width="800px" alt="인프런 강의 검색 시연">
 * **IT/과학 뉴스 서비스**
     <br/>
