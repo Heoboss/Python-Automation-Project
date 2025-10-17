@@ -1,11 +1,10 @@
 # 💼 취업 All In One Service
 
-Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 과정을 한 곳에서 해결할 수 있도록 돕는 웹 애플리케이션 프로젝트입니다.
+> Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 과정을 한 곳에서 해결할 수 있도록 돕는 웹 애플리케이션 프로젝트입니다.
 
 <img width="614" height="695" alt="image" src="https://github.com/user-attachments/assets/0f5b3bc6-db85-4bf0-8af7-00881227c9a3" />
 
-
-<br>
+---
 
 ## ✨ 주요 기능 (Key Features)
 
@@ -26,7 +25,7 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 * **사용자 인증 시스템**
   * Flask를 기반으로 간단한 로그인, 회원가입, 로그아웃 기능을 구현하여 사용자별 데이터 캐싱을 지원합니다.
 
-<br>
+---
 
 ## 🛠️ 사용된 기술 (Tech Stack)
 
@@ -36,7 +35,7 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 * **Concurrency:** `concurrent.futures.ThreadPoolExecutor`
 * **Deployment:** `AWS EC2`
 
-<br>
+---
 
 ## 🎥 서비스 시연 (Live Demo)
 이 서비스의 주요 기능인 **통합 채용 공고 검색**, **기업 정보 조회**, **다크 모드**, **인프런 강의검색** 과정을 간략한 GIF로 확인해보세요.
@@ -69,8 +68,7 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 
 ![카카오톡_즉시받아보기_편집후](https://github.com/user-attachments/assets/36e7f249-41d2-4d1a-90b9-9fefbe37d99c)
 
-<br>
-
+---
 
 ## ⚡ 트러블 슈팅 (Trouble Shooting)
 * 속도개선 1. aws ec2의 인스턴스 중 무료 플랜 한도내에서 가장 좋은 인스턴스인 m7i-flex.large를 사용하여 1GB -> 8GB의 ram 업그레이드로 크롤링 속도 30% 향상
@@ -81,6 +79,7 @@ Python Flask와 자동화 스크립트를 활용하여 취업 준비의 모든 �
 
 ![속도개선2](https://github.com/user-attachments/assets/65b8a371-0a85-43c3-8eb8-8a488007bbf3)
 
+---
 
 ## 🚀 시작하기 (Getting Started)
 
@@ -170,7 +169,8 @@ echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 python3 app.py
 ```
 이제 웹 브라우저에서 `http://퍼블릭Ipv4주소:5000`으로 접속하여 서비스를 확인할 수 있습니다.
-<br>
+
+---
 
 ## 💡 향후 개선 계획 (Future Work)
 
